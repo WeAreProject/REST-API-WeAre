@@ -31,21 +31,22 @@ export const getService = async (req, res) => {
 
 export const createService = async (req, res) => {
   const { name, description } = req.body;
+  const imageUrl = req.file ? req.file.path : null; // URL de la imagen subida a Cloudinary
 
   try {
     const [rows] = await pool.query(
-      "INSERT INTO services (name, description) VALUES (?,?)",
-      [name, description]
+      "INSERT INTO services (name, description, image) VALUES (?, ?, ?)",
+      [name, description, imageUrl]
     );
-    res.send({
+
+    res.json({
       id: rows.insertId,
       name,
       description,
+      image: imageUrl,
     });
   } catch (error) {
-    return res.status(500).json({
-      message: "something goes wrong",
-    });
+    return res.status(500).json({ message: "something goes wrong" });
   }
 };
 
