@@ -30,10 +30,17 @@ export const getService = async (req, res) => {
 };
 
 export const createService = async (req, res) => {
-  const { name, description } = req.body;
-  const imageUrl = req.file ? req.file.path : null; // URL de la imagen subida a Cloudinary
-
   try {
+    console.log("Received data:", req.body);
+    console.log("Uploaded file:", req.file);
+
+    const { name, description } = req.body;
+    const imageUrl = req.file ? req.file.path || req.file.url : null;
+
+    if (!name || !description) {
+      return res.status(400).json({ message: "Name and description are required" });
+    }
+
     const [rows] = await pool.query(
       "INSERT INTO services (name, description, image) VALUES (?, ?, ?)",
       [name, description, imageUrl]
@@ -46,9 +53,11 @@ export const createService = async (req, res) => {
       image: imageUrl,
     });
   } catch (error) {
-    return res.status(500).json({ message: "something goes wrong" });
+    console.error("Error in createService:", error);
+    return res.status(500).json({ message: "Something went wrong" });
   }
 };
+
 
 export const deleteServices = async (req, res) => {
   try {

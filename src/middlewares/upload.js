@@ -5,11 +5,12 @@ import cloudinary from "../utils/cloudinary.js";
 const storage = new CloudinaryStorage({
   cloudinary,
   params: {
-    folder: "services", // Nombre de la carpeta en Cloudinary
-    format: async (req, file) => "png", // Formato de imagen
-    public_id: (req, file) => file.originalname.split(".")[0], // Nombre del archivo
+    folder: "services",
+    format: async (req, file) => file.mimetype.split("/")[1], // Usa el formato de la imagen
+    public_id: (req, file) => file.originalname.split(".")[0],
   },
 });
+
 
 const upload = multer({ storage });
 
