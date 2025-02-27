@@ -2,16 +2,28 @@ import multer from "multer";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
 import cloudinary from "../utils/cloudinary.js";
 
-const storage = new CloudinaryStorage({
+// Middleware para servicios
+const serviceStorage = new CloudinaryStorage({
   cloudinary,
   params: {
     folder: "services",
-    format: async (req, file) => file.mimetype.split("/")[1], // Usa el formato de la imagen
+    format: async (req, file) => file.mimetype.split("/")[1],
     public_id: (req, file) => file.originalname.split(".")[0],
   },
 });
 
+const uploadServiceImage = multer({ storage: serviceStorage });
 
-const upload = multer({ storage });
+// Middleware para owners
+const ownerStorage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: "owners",
+    format: async (req, file) => file.mimetype.split("/")[1],
+    public_id: (req, file) => file.originalname.split(".")[0],
+  },
+});
 
-export default upload;
+const uploadOwnerImage = multer({ storage: ownerStorage });
+
+export { uploadServiceImage, uploadOwnerImage };
