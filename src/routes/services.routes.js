@@ -6,7 +6,7 @@ import {
   deleteServices,
   getService
 } from "../controllers/services.controller.js";
-import { uploadServiceImage } from "../middlewares/upload.js"; // Importa correctamente
+import { uploadServiceImage } from "../middlewares/upload.js";
 
 const router = Router();
 
@@ -14,7 +14,7 @@ router.get('/services', getServices);
 
 router.get('/services/:id', getService);
 
-router.post("/services", uploadServiceImage.single("image"), createService); // "image" debe coincidir en Postman
+router.post("/services", uploadServiceImage.single("image"), createService); 
 
 router.patch('/services/:id', updateService);
 

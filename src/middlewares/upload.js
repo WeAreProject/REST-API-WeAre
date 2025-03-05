@@ -2,7 +2,6 @@ import multer from "multer";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
 import cloudinary from "../utils/cloudinary.js";
 
-// Middleware para servicios
 const serviceStorage = new CloudinaryStorage({
   cloudinary,
   params: {
@@ -14,7 +13,6 @@ const serviceStorage = new CloudinaryStorage({
 
 const uploadServiceImage = multer({ storage: serviceStorage });
 
-// Middleware para owners
 const ownerStorage = new CloudinaryStorage({
   cloudinary,
   params: {
