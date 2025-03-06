@@ -36,4 +36,37 @@ export const registerCustomer = async (req, res ) =>{
         
     }
 ;}
-   
+
+export const getCustomers = async (req, res) => {
+    try {
+        const [rows] = await pool.query("SELECT id, full_name, email, username, image, created_at FROM customers");
+        res.status(200).json(rows);
+    } catch (error) {
+        console.error("Error in getCustomers:", error);
+        return res.status(500).json({ message: "Something went wrong" });
+    }
+}; 
+
+export const getCustomerById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const [rows] = await pool.query("SELECT id, full_name, email, username, image, created_at FROM customers WHERE id = ?", [id]);
+        if (rows.length === 0) return res.status(404).json({ message: "Customer not found" });
+        res.status(200).json(rows[0]);
+    } catch (error) {
+        console.error("Error in getCustomerById:", error);
+        return res.status(500).json({ message: "Something went wrong" });
+    }
+};
+
+
+export const deleteCustomer = async (req, res) => {
+    try {
+        const { id } = req.params;
+        await pool.query("DELETE FROM customers WHERE id = ?", [id]);
+        res.status(200).json({ message: "Customer deleted successfully" });
+    } catch (error) {
+        console.error("Error in deleteCustomer:", error);
+        return res.status(500).json({ message: "Something went wrong" });
+    }
+};
