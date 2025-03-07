@@ -21,7 +21,16 @@ const ownerStorage = new CloudinaryStorage({
     public_id: (req, file) => file.originalname.split(".")[0],
   },
 });
-
 const uploadOwnerImage = multer({ storage: ownerStorage });
 
-export { uploadServiceImage, uploadOwnerImage };
+const businessStorage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: 'businesses',  
+    format: async (req, file) => file.mimetype.split('/')[1],
+    public_id: (req, file) => file.originalname.split('.')[0],  
+  },
+});
+const uploadBusinessImage = multer({ storage: businessStorage });
+
+export { uploadServiceImage, uploadOwnerImage, uploadBusinessImage  };
