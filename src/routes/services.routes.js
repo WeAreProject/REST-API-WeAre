@@ -1,23 +1,19 @@
 import { Router } from "express";
 import {
-  getServices,
-  createService,
-  updateService,
-  deleteServices,
-  getService
-} from "../controllers/services.controller.js";
+  registerService,
+  getAllServices,
+  getServiceById,
+} from "../controllers/service.controller.js";
 import { uploadServiceImage } from "../middlewares/upload.js";
 
 const router = Router();
 
-router.get('/services', getServices);
-
-router.get('/services/:id', getService);
-
-router.post("/services", uploadServiceImage.single("image"), createService); 
-
-router.patch('/services/:id', updateService);
-
-router.delete('/services/:id', deleteServices);
+router.get("/services", getAllServices);
+router.get("/services/:id", getServiceById);
+router.post(
+  "/services/register",
+  uploadServiceImage.fields([{ name: "image", maxCount: 1 }]),
+  registerService
+);
 
 export default router;

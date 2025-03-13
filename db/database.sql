@@ -39,9 +39,9 @@ CREATE TABLE businesses (
     phone VARCHAR(20) NOT NULL,
     location VARCHAR(255) NOT NULL,
     operation_hours VARCHAR(255) NOT NULL,
-    social_media_links JSON DEFAULT NULL, -- Se almacenan como un array JSON (opcional)
-    tax_id VARCHAR(50) DEFAULT NULL, -- RFC (Opcional)
-    professional_license VARCHAR(500) DEFAULT NULL, -- Licencia profesional (Imagen)
+    social_media_links JSON DEFAULT NULL, 
+    tax_id VARCHAR(50) DEFAULT NULL, 
+    professional_license VARCHAR(500) DEFAULT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (owner_id) REFERENCES owners(id) ON DELETE CASCADE
 );

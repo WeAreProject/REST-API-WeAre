@@ -1,11 +1,10 @@
 import express from 'express'
 import cors from 'cors';  
-import servicesRoutes from './routes/services.routes.js'
 import indexRoutes from './routes/index.routes.js'
 import ownersRoutes from "./routes/owners.routes.js";
 import customerRoutes from "./routes/customers.routes.js"
 import businessRoutes from './routes/businesses.routes.js'; 
-
+import servicesRoutes from './routes/services.routes.js'
 
   
 
