@@ -6,6 +6,7 @@ dotenv.config();
 
 export const registerCustomer = async (req, res ) =>{
     try {
+        
         if (!req.file){
             return res.status(400).json({message: "Image upload failed"});
         }
@@ -30,6 +31,7 @@ export const registerCustomer = async (req, res ) =>{
             image: imageUrl,
             message: "Customer registered seccessfully"
         })
+
     } catch (error) {
         console.error("Error in registerCustomer:", error);
         return res.status(500).json ({message: " Something went wrong"});
