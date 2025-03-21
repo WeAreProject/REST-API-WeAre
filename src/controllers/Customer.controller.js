@@ -87,7 +87,7 @@ export const deleteCustomer = async (req, res) => {
 };
 
 
-export const loginCustomer = async (req, res) => {
+export const loginUser = async (req, res) => {
     try {
         const { email, password } = req.body;
 
@@ -95,14 +95,27 @@ export const loginCustomer = async (req, res) => {
             return res.status(400).json({ message: "Email and password are required" });
         }
 
-        // Verificar si el usuario existe en la base de datos
-        const [rows] = await pool.query("SELECT * FROM customers WHERE email = ?", [email]);
+        // Verificar si el usuario es un cliente o un dueño
+        let rows;
+        let user;
+
+        // Primero verificamos si es un cliente
+        [rows] = await pool.query("SELECT * FROM customers WHERE email = ?", [email]);
 
         if (rows.length === 0) {
-            return res.status(401).json({ message: "Invalid email or password" });
-        }
+            // Si no es un cliente, verificamos si es un dueño
+            [rows] = await pool.query("SELECT * FROM owners WHERE email = ?", [email]);
 
-        const user = rows[0];
+            if (rows.length === 0) {
+                return res.status(401).json({ message: "Invalid email or password" });
+            }
+
+            user = rows[0];
+            user.role = "owner"; // Añadir el rol al objeto de usuario
+        } else {
+            user = rows[0];
+            user.role = "customer"; // Añadir el rol al objeto de usuario
+        }
 
         // Verificar la contraseña
         const isMatch = await bcrypt.compare(password, user.password);
@@ -112,7 +125,7 @@ export const loginCustomer = async (req, res) => {
 
         // Crear el token JWT
         const token = jwt.sign(
-            { id: user.id, email: user.email, username: user.username },
+            { id: user.id, email: user.email, username: user.username, role: user.role },
             JWT_SECRET,
             { expiresIn: "1h" }
         );
@@ -123,12 +136,13 @@ export const loginCustomer = async (req, res) => {
             email: user.email,
             username: user.username,
             image: user.image,
+            role: user.role,
             token,
             message: "Login successful",
         });
 
     } catch (error) {
-        console.error("Error in loginCustomer:", error);
+        console.error("Error in loginUser:", error);
         return res.status(500).json({ message: "Something went wrong" });
     }
 };

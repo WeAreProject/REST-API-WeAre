@@ -4,7 +4,7 @@ import {
   getCustomers,
   getCustomerById,
   deleteCustomer,
-  loginCustomer 
+  loginUser 
 } from "../controllers/Customer.controller.js";
 import { uploadOwnerImage } from "../middlewares/upload.js";
 
@@ -16,7 +16,7 @@ router.post(
   uploadOwnerImage.single("image"),
   registerCustomer
 );
-router.post("/customers/login", loginCustomer);  // <-- Agregar ruta de login
+router.post("/customers/login", loginUser);  // <-- Agregar ruta de login
 router.get("/customers", getCustomers);
 router.get("/customers/:id", getCustomerById);
 router.delete("/customers/:id", deleteCustomer);
