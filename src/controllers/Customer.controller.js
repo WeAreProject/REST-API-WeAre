@@ -2,8 +2,14 @@ import bcrypt from "bcryptjs";
 import dotenv from "dotenv";
 import { pool } from "../db.js";
 import jwt from "jsonwebtoken";
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-dotenv.config();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Configurar dotenv con la ruta absoluta
+dotenv.config({ path: path.join(__dirname, '../../.env') });
 
 export const registerCustomer = async (req, res ) =>{
     try {
@@ -77,8 +83,6 @@ export const deleteCustomer = async (req, res) => {
 
 export const loginCustomer = async (req, res) => {
     try {
-        console.log("Request Body:", req.body);  // Agrega este console.log
-
         const { email, password } = req.body;
 
         if (!email || !password) {
@@ -98,6 +102,11 @@ export const loginCustomer = async (req, res) => {
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
             return res.status(401).json({ message: "Invalid email or password" });
+        }
+
+        // Verificar que JWT_SECRET existe
+        if (!process.env.JWT_SECRET) {
+            throw new Error("JWT_SECRET no está definido en las variables de entorno");
         }
 
         // Crear el token JWT
