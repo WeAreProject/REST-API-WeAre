@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { registerBusiness } from '../controllers/Business.controller.js';
 import { uploadBusinessImage } from '../middlewares/upload.js';
-import { getBusinesses, getBusinessById } from '../controllers/Business.controller.js';
+import { getBusinesses, getBusinessesByOwner } from '../controllers/Business.controller.js';
 
 const router = Router();
 
@@ -11,6 +11,6 @@ router.post("/businesses/register", uploadBusinessImage.fields([
   ]), registerBusiness);
 
 router.get("/businesses", getBusinesses);
-router.get("/businesses/:id", getBusinessById);
+router.get("/businesses/owner/:owner_id", getBusinessesByOwner);
 
 export default router;
