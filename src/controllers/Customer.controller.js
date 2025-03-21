@@ -9,7 +9,12 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Configurar dotenv con la ruta absoluta
-dotenv.config({ path: path.join(__dirname, '../../.env') });
+const envPath = path.join(__dirname, '../../.env');
+console.log('Loading .env from:', envPath);
+dotenv.config({ path: envPath });
+
+// Verificar que las variables de entorno se cargaron correctamente
+console.log('JWT_SECRET loaded:', !!process.env.JWT_SECRET);
 
 export const registerCustomer = async (req, res ) =>{
     try {
@@ -106,6 +111,7 @@ export const loginCustomer = async (req, res) => {
 
         // Verificar que JWT_SECRET existe
         if (!process.env.JWT_SECRET) {
+            console.error('Variables de entorno disponibles:', Object.keys(process.env));
             throw new Error("JWT_SECRET no está definido en las variables de entorno");
         }
 
