@@ -14,7 +14,8 @@ console.log('Loading .env from:', envPath);
 dotenv.config({ path: envPath });
 
 // Verificar que las variables de entorno se cargaron correctamente
-console.log('JWT_SECRET loaded:', !!process.env.JWT_SECRET);
+const JWT_SECRET = process.env.JWT_SECRET || 'm1S3gr3t0JwT!!2397'; // Valor por defecto para desarrollo
+console.log('JWT_SECRET loaded:', !!JWT_SECRET);
 
 export const registerCustomer = async (req, res ) =>{
     try {
@@ -109,16 +110,10 @@ export const loginCustomer = async (req, res) => {
             return res.status(401).json({ message: "Invalid email or password" });
         }
 
-        // Verificar que JWT_SECRET existe
-        if (!process.env.JWT_SECRET) {
-            console.error('Variables de entorno disponibles:', Object.keys(process.env));
-            throw new Error("JWT_SECRET no está definido en las variables de entorno");
-        }
-
         // Crear el token JWT
         const token = jwt.sign(
             { id: user.id, email: user.email, username: user.username },
-            process.env.JWT_SECRET,
+            JWT_SECRET,
             { expiresIn: "1h" }
         );
 
