@@ -38,3 +38,22 @@ export const registerOwner = async (req, res) => {
   };
   
 
+// Obtener un owner por ID
+export const getOwnerById = async (req, res) => {
+  try {
+      const { id } = req.params; // Obtener el ID desde los parámetros de la URL
+      
+      const [rows] = await pool.query("SELECT * FROM owners WHERE id = ?", [id]);
+
+      // Verificar si no se encuentra el propietario con el ID proporcionado
+      if (rows.length === 0) {
+          return res.status(404).json({ message: "Owner not found" });
+      }
+
+      // Devolver los datos del propietario encontrado
+      res.json(rows[0]);
+  } catch (error) {
+      console.error("Error in getOwnerById:", error);
+      res.status(500).json({ message: "Something went wrong" });
+  }
+};
