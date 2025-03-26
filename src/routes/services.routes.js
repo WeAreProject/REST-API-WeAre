@@ -3,6 +3,7 @@ import {
   registerService,
   getAllServices,
   getServiceById,
+  getServicesByBusinessId,
 } from "../controllers/service.controller.js";
 import { uploadServiceImage } from "../middlewares/upload.js";
 
@@ -15,5 +16,6 @@ router.post(
   uploadServiceImage.fields([{ name: "image", maxCount: 1 }]),
   registerService
 );
+router.get("/services/business/:business_id", getServicesByBusinessId); 
 
 export default router;

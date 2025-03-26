@@ -63,3 +63,20 @@ export const getServiceById = async (req, res) => {
         res.status(500).json({ message: "Something went wrong" });
     }
 };
+
+
+export const getServicesByBusinessId = async (req, res) => {
+    try {
+        const { business_id } = req.params;
+        const [rows] = await pool.query("SELECT * FROM services WHERE business_id = ?", [business_id]);
+
+        if (rows.length === 0) {
+            return res.status(404).json({ message: "No services found for this business" });
+        }
+
+        res.json(rows);
+    } catch (error) {
+        console.error("Error in getServicesByBusinessId:", error);
+        res.status(500).json({ message: "Something went wrong" });
+    }
+};
