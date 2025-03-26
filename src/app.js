@@ -7,7 +7,7 @@ import businessRoutes from "./routes/businesses.routes.js";
 import servicesRoutes from "./routes/services.routes.js";
 import reviewRoutes from "./routes/reviews.routes.js";
 import categoryRoutes from "./routes/category.routes.js";
-
+import purchaseRoutes from './routes/registerPurchase.routes.js'
 const app = express();
 
 app.use(
@@ -28,7 +28,8 @@ app.use(
   customerRoutes,
   businessRoutes,
   reviewRoutes,
-  categoryRoutes
+  categoryRoutes,
+  purchaseRoutes
 );
 
 app.use((req, res, next) => {
